@@ -1,17 +1,39 @@
-// When the order is confirmed, create the cookies
-$("#orderForm").submit(function(event) {
-	// Set Order Selections
-	document.cookie = "entrees=" + entrees + " ; path=/;";
-	document.cookie = "fruitsVegetables1=" + fruitsVegetablesArray[0] + "; path=/;";
-	if (fruitsVegetablesArray[1] != null) {
-		document.cookie = "fruitsVegetables2=" + fruitsVegetablesArray[1] + "; path=/;";
-	}
-	document.cookie = "beverages=" + beverages + "; path=/;";
+// Process the order on client sidebar
 
-	// Disable Orders
-	document.cookie = "orderDisabled=true; path=/;";
+var socket = io.connect();
+console.log(socket);
+var order = [];
+/* Order Array Map */
+/* 0 - entrees, 1 - fruitsVegetablesArray[0], 2 - fruitsVegetablesArray[1] or null, 3 - beverages */
+
+// When the order is confirmed, create the disabled cookie
+$(".orderForm").submit(function(event) {
 	
-	// Go to Order Placed page
-	event.preventDefault();
-	window.location = "http://10.254.17.169:8082/order-placed/";
+	// Set Order Selections
+	order[0] = entrees;
+	order[1] = fruitsVegetablesArray[0];
+	if (fruitsVegetablesArray[1] != null) {
+		order[2] = fruitsVegetablesArray[1];
+	}
+	order[3] =  beverages;
+	//console.log(order);
+	
+	// Notify socket server
+	socket.emit('NewOrder', order);
+	
+	console.log(order);
+	
+	socket.on('NewOrder', function(status) {
+		console.log(status);
+		console.log("Received");
+		/*if (status) {
+			// Disable Orders
+			document.cookie = "orderDisabled=true; path=/;";
+			
+			// Go to Order Placed page
+			event.preventDefault();
+			window.location = "http://10.254.17.169:8082/order-placed/";
+		}*/
+	});
+	return false;
 });
