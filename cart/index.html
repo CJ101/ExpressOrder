@@ -5,41 +5,40 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Cart | Express Order</title>
-	
+
 	<!-- Material Design fonts -->
     <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,500,400italic,700,700italic" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	
+
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	
+
 	<!-- GetMDL -->
 	<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
 	<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-	
-	
+
+
 	<!-- GetMDL-Select -->
 	<script src="../media/scripts/getmdl-select.min.js"></script>
 	<link rel="stylesheet" href="../media/scripts/getmdl-select.min.css">
-	
+
 	<!-- Custom Stylesheets and Scripts -->
 	<link href="../media/stylesheet.css" rel="stylesheet">
 	<script src="../media/scripts.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 	<div id="sidenav" class="sidenav">
 		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
 		  <a href="../">Home</a>
-		  <a class="orderActive" href="../order/">Order</a>
-		  <a href="../order-placed/">My Order</a>
-		  <a href="../settings/">Settings</a>
-		  <a href="../logout/">Logout</a>
+		  <a class="orderActive" href="../order/index.html">Order</a>
+		  <a href="../order-placed/index.html">My Order</a>
+		  <a href="../settings/index.html">Settings</a>
+		  <a href="../logout/index.html">Logout</a>
 	</div>
-	
+
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -48,17 +47,17 @@
 			</div>
 		</div>
 	</nav>
-	
+
 	<div class="featuredContent">
 		<h3>Order Lunch</h3>
 		<h5>Select your items from the menu below</h5>
 	</div>
-	
+
 	<div class="container">
 		<div class="row">
 			<!-- Begin Form -->
-			<form name="orderForm" class="orderForm" action="">
-			
+			<form name="orderForm" id="orderForm" action="">
+
 				<!-- Begin Entrees -->
 				<div class="col-md-12">
 					<div class="featuredBox">
@@ -70,7 +69,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- Begin Fruits and Vegetables -->
 				<div class="col-md-12">
 					<div class="featuredBox">
@@ -82,7 +81,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- Begin Beverages -->
 				<div class="col-md-12">
 					<div class="featuredBox">
@@ -94,7 +93,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- Begin Cart -->
 				<div class="col-md-12">
 					<div class="featuredBox">
@@ -112,11 +111,11 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<div id="snackbar"></div>
 	<script>
 	$('.orderDisabled').hide();
-	var currentdate = new Date(); 
+	var currentdate = new Date();
 	if (currentdate.getHours() >= 11 && currentdate.getHours() < 16) {
 		$('.orderDisabled').show();
 		$('.orderActive').hide();
@@ -125,11 +124,11 @@
 		$('#snackbar').html("Please check back at 4 PM EST to preorder.");
 		showAlert();
 	}
-	
+
 	var entrees = getUrlVars()["entrees"];
 	var fruitsVegetablesArray = getUrlArrayValues("fruitsVegetables");
 	var beverages = getUrlVars()["beverages"];
-	
+
 	// Used for Single Selections (Radios or Text)
 	function getUrlVars() {
 		var vars = {};
@@ -149,39 +148,39 @@
 		});
 		return values;
 	}
-	
+
 	// Entrees
 	$('#entrees').html('<div class="row foodObject">'+
 			'<div class="col-xs-7 cardObject">'+
 				'<img class="img-responsive" src="../media/foods/'+ entrees +'.jpg" width="220" height="138">'+
 			'</div>'+
-		
+
 			'<div class="col-xs-5 cardObject">'+
 				'<b>'+ entrees +'</b><br>'+
 				'<input type="hidden" id="'+ entrees +'" name="entrees" value="'+ entrees +'">'+
 			'</div>'+
 		'</div>');
-		
+
 	// Fruits and Vegetables
 	for (var x = 0; x < fruitsVegetablesArray.length; x++) {
 		$('#fruitsVegetables').append('<div class="row foodObject">'+
 				'<div class="col-xs-7 cardObject">'+
 					'<img class="img-responsive" src="../media/foods/'+ fruitsVegetablesArray[x] +'.jpg" width="220" height="138">'+
 				'</div>'+
-		
+
 				'<div class="col-xs-5 cardObject">'+
 					'<b>'+ fruitsVegetablesArray[x] +'</b><br>'+
 					'<input type="hidden" id="'+ fruitsVegetablesArray[x] +'" name="fruitsVegetables" value="'+ fruitsVegetablesArray[x] +'">'+
 				'</div>'+
 			'</div>');
 	}
-		
+
 	// Beverages
 	$('#beverages').html('<div class="row foodObject">'+
 			'<div class="col-xs-7 cardObject">'+
 				'<img class="img-responsive" src="../media/foods/'+ beverages +'.jpg" width="220" height="138">'+
 			'</div>'+
-		
+
 			'<div class="col-xs-5 cardObject">'+
 				'<b>'+ beverages +'</b><br>'+
 				'<input type="hidden" id="'+ beverages +'" name="beverages" value="'+ beverages +'">'+
