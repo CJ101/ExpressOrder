@@ -27,7 +27,8 @@
 	
 	<!-- Custom Stylesheets and Scripts -->
 	<link href="../media/stylesheet.css" rel="stylesheet">
-	<script src="../media/scripts.js"></script>		
+	<script src="../media/scripts.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 	<div id="sidenav" class="sidenav">
@@ -56,7 +57,7 @@
 	<div class="container">
 		<div class="row">
 			<!-- Begin Form -->
-			<form name="orderForm" id="orderForm" action="">
+			<form name="orderForm" class="orderForm" action="">
 			
 				<!-- Begin Entrees -->
 				<div class="col-md-12">
